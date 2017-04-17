@@ -1,0 +1,12 @@
+a {
+  color: #00B7FF;
+}
+
+label.radio-inline {
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+
+#close-match-photo {
+  width: 200px;
+}

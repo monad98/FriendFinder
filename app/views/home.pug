@@ -1,0 +1,18 @@
+extends layout
+
+block content
+	.container
+		.jumbotron
+			h1
+				i.glyphicon.glyphicon-glass
+				|  Friend Finder
+			hr
+			h2 Answer a few basic questions.
+			h2 Then find the friend with the greatest compatibility!
+			br
+			.btn-toolbar
+				a.btn.btn-lg.btn-primary(href='/survey')
+					i.glyphicon.glyphicon-list-alt
+					|  Go to Survey
+				a.btn.btn-lg.btn-default(href='/admin') Administrator
+

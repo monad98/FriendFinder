@@ -1,0 +1,54 @@
+extends layout
+block content
+  script.
+    $(document).ready(function(){
+      $("#submit").click(() => {
+        
+        //simple input validation.
+        //- if(answered < questionLength || !name || !photo) return alert("Please fill out all fields before submitting!")
+
+        let questions = [];
+        $('input:text').each(function() {
+          questions.push($(this).val().trim());
+        });
+
+        $.post({
+          url: '/api/admin', 
+          data: JSON.stringify(questions),
+          contentType: 'application/json; charset=utf-8'
+        })
+        .then(res => {
+          const {result} = res;
+          $('#modify-result').addClass('alert-success');
+          $('#result-text').text("Questions successfully changed!");
+          $('#modify-result').alert();
+        }, () => {
+          $('#modify-result').addClass('alert-danger');
+          $('#result-text').text("Something went wrong! Try again");
+          $('#modify-result').alert();
+        });
+      });
+    });
+
+
+  .container
+    h2 You can modify survey question here.
+    br
+    div
+      each q, index in questions
+        h4= 'Q ' + (index+1)
+        .form-group
+          input.form-control(type="text", placeholder="Search", value=q)
+    br
+    br
+    button.btn.btn-primary.btn-lg.btn-block(id="submit")
+      i.glyphicon.glyphicon-ok
+      |  Save Questions
+    hr
+
+    #modify-result.alert.alert-dismissible(role="alert")
+      button.close(type="button", data-dismiss='alert')
+        span &times;
+      strong#result-text
+
+    

@@ -1,0 +1,89 @@
+extends layout
+block content
+  script.
+    $(document).ready(function(){
+      $("#submit").click(() => {
+        const name = $('#name').val().trim();
+        const photo = $('#photo-url').val().trim();
+        const questionLength = '#{questions.length}'; // number of questions
+        const answered = $('input:radio:checked').length;
+        
+        //simple input validation.
+        if(answered < questionLength || !name || !photo) return alert("Please fill out all fields before submitting!")
+
+        let scores = [];
+        $('input:radio:checked').each(function() {
+          scores.push(parseInt($(this).val()));
+        });
+
+        $.post({
+          url: '/api/friends', 
+          data: JSON.stringify({ name, photo, scores }),
+          contentType: 'application/json; charset=utf-8'
+        })
+        .then(res => {
+          const closeMatch = res;
+          $('#close-match-name').text(closeMatch.name);
+          $('#close-match-photo').attr('src', closeMatch.photo);
+          $('#close-match-score').text(closeMatch.diff);
+          $('#close-match-modal').modal();
+        });
+      });
+    });
+  .container
+    h2 Survey Questions
+    hr
+    h3 About You
+    h4 Name (Required)
+    input#name.form-control(
+      type="text"
+      required
+    )
+    h4 Link to Photo Image (Required)
+    input#photo-url.form-control(
+      type="text"
+      required
+    )
+    hr
+    div
+      each q, index in questions
+        h3= 'Question ' + (index+1)
+        h4= q
+        label.radio-inline
+          input(type="radio", name='radio-q'+(index+1), value="1")
+          | 1(Strongly disagree)
+        label.radio-inline
+          input(type="radio", name='radio-q'+(index+1), checked, value="2")
+          | 2
+        label.radio-inline
+          input(type="radio", name='radio-q'+(index+1), value="3")
+          | 3
+        label.radio-inline
+          input(type="radio", name='radio-q'+(index+1), value="4")
+          | 4
+        label.radio-inline
+          input(type="radio", name='radio-q'+(index+1), value="5")
+          | 5(Strongly agree)
+    br
+    br
+    button.btn.btn-primary.btn-lg.btn-block(id="submit")
+      i.glyphicon.glyphicon-ok
+      |  Submit
+    hr
+
+
+    .modal.fade#close-match-modal(role="dialog")
+      .modal-dialog(role="document")
+        .modal-content
+          .modal-header
+            button.close(type="button", data-dismiss="modal") &times;
+            .modal-title BEST MATCH
+          .modal-body
+            .text-center
+              h2 Name: 
+                span#close-match-name 
+              img#close-match-photo(src="", alt="Close Match")
+              h2 Total Difference: 
+                span#close-match-score
+          .modal-footer
+            button.btn.btn-default(type="button", data-dismiss="modal") Close
