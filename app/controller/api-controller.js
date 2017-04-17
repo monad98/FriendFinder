@@ -8,6 +8,7 @@ const list = (req, res, next) => res.json(friends);
 
 // POST /api/friends
 const getCompatibleFriends = (req, res, next) => {
+  //calculate closest match
   const { name, photo, scores } = req.body;
   const totalDifferences = friends.map(friend => {
     return {
@@ -16,11 +17,13 @@ const getCompatibleFriends = (req, res, next) => {
       diff: friend.scores.reduce((totalDiff, friendScore, idx) => totalDiff + Math.abs(friendScore - scores[idx]), 0)
     };
   });
-
   const closestMatch = totalDifferences.reduce((cloest, curr) => curr.diff < cloest.diff ? curr : cloest);
-  console.log(closestMatch);
-  res.json(closestMatch);
 
+  //add user to firebase after calculating closest friend
+  const newUser = db.ref('friends').push();
+  newUser.set(req.body);
+
+  res.json(closestMatch);
 };
 
 // POST /api/admin
