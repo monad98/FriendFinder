@@ -1,7 +1,7 @@
 const db = require('../firebase/index.js');
 const friends$ = require('../data/friends');
 let friends = [];
-friends$.subscribe(friendsArr => friends = friendsArr);
+friends$.subscribe(friendsObj => friends = Object.keys(friendsObj).map(key => friendsObj[key]));
 
 // GET /api/friends
 const list = (req, res, next) => res.json(friends);
