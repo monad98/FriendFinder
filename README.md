@@ -27,6 +27,8 @@ var config = {
 
 # run
 npm start
+   or
+npm serve
 ```
 
 ## Included

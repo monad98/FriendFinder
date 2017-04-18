@@ -10,3 +10,9 @@ label.radio-inline {
 #close-match-photo {
   width: 200px;
 }
+#modify-result {
+  display: none;
+  position: fixed;
+  top: 25px;
+  right: 25px;
+}

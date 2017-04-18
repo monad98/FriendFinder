@@ -2,6 +2,7 @@ extends layout
 block content
   script.
     $(document).ready(function(){
+
       $("#submit").click(() => {
         
         //simple input validation.
@@ -21,11 +22,11 @@ block content
           const {result} = res;
           $('#modify-result').addClass('alert-success');
           $('#result-text').text("Questions successfully changed!");
-          $('#modify-result').alert();
+          $('#modify-result').show('slow');
         }, () => {
           $('#modify-result').addClass('alert-danger');
           $('#result-text').text("Something went wrong! Try again");
-          $('#modify-result').alert();
+          $('#modify-result').show('slow');
         });
       });
     });
@@ -48,5 +49,5 @@ block content
 
     #modify-result.alert.alert-dismissible(role="alert")
       button.close(type="button", data-dismiss='alert')
-        span &times;
+        span(aria-hidden="true") &times;
       strong#result-text
